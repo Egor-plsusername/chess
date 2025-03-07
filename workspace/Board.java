@@ -48,6 +48,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     private int currX;
     private int currY;
     
+   
 
     
     public Board(GameWindow g) {
@@ -59,11 +60,20 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         this.addMouseMotionListener(this);
 
         //TO BE IMPLEMENTED FIRST
-     
+       
       //for (.....)  
 //        	populate the board with squares here. Note that the board is composed of 64 squares alternating from 
 //        	white to black.
 
+    boolean count = true;
+    for(int i = 0; i < board.length; i++){
+      count = !count;
+      for(int c = 0; c < board.length; c++){
+          count = !count;
+         board[i][c] = new Square(this, count, i, c); 
+         this.add(board[i][c]);
+}
+}
         initializePieces();
 
         this.setPreferredSize(new Dimension(400, 400));
@@ -100,6 +110,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     public Piece getCurrPiece() {
         return this.currPiece;
     }
+
+  
 
     @Override
     public void paintComponent(Graphics g) {
@@ -150,21 +162,38 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
         
-        //using currPiece
-        
-       
+        for(Square [] row: board) {
+        	for(Square s: row) {
+        		s.setBorder(null);
+     
+        	}
+        	
+        }
+               
         fromMoveSquare.setDisplay(true);
         currPiece = null;
         repaint();
     }
 
+
+
+
     @Override
     public void mouseDragged(MouseEvent e) {
         currX = e.getX() - 24;
         currY = e.getY() - 24;
-
+        
+// let's highligh all the squares that are legal to move to!
+        if(currPiece!= null) {
+        	for(Square s: currPiece.getLegalMoves(this, fromMoveSquare)) {
+        		s.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+        	}
+        	
+        }
+        
         repaint();
     }
+
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -181,5 +210,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     @Override
     public void mouseExited(MouseEvent e) {
     }
+
+  
+
 
 }

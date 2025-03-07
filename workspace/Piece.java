@@ -50,17 +50,48 @@ public class Piece {
     //return a list of every square that is "controlled" by this piece. A square is controlled
     //if the piece capture into it legally.
     public ArrayList<Square> getControlledSquares(Square[][] board, Square start) {
-     return null;
-    }
-    
+      ArrayList<Square> occ = new ArrayList<>();
+      if(start.getRow()-1>=0){
+        for(int i=0; i<3; i++){    
+          occ.add(board[start.getCol()-i][start.getRow()-i]);
+        }
+      }
 
+      if(start.getRow()+1>=8){
+         for(int i=0; i<3; i++){ 
+          occ.add((board[start.getCol()+i][start.getRow()+i]));
+        }
+         }
+
+        return occ;
+        }
     //TO BE IMPLEMENTED!
     //implement the move function here
     //it's up to you how the piece moves, but at the very least the rules should be logical and it should never move off the board!
     //returns an arraylist of squares which are legal to move to
     //please note that your piece must have some sort of logic. Just being able to move to every square on the board is not
     //going to score any points.
+   
+
     public ArrayList<Square> getLegalMoves(Board b, Square start){
-    	return null;
+         ArrayList<Square> moves = new ArrayList();
+
+         if(start.getRow()-1>=0 && (!b.getSquareArray()[start.getRow()-1][start.getCol()].isOccupied())){
+          moves.add(b.getSquareArray()[start.getRow()-1][start.getCol()]);
+        }
+
+         if(start.getCol()-1>=0 && (!b.getSquareArray()[start.getCol()-1][start.getRow()].isOccupied())){
+          moves.add(b.getSquareArray()[start.getCol()-1][start.getRow()]);
+        }
+
+         if(start.getRow()+1>=8 && (!b.getSquareArray()[start.getRow()+1][start.getCol()].isOccupied())){
+          moves.add(b.getSquareArray()[start.getRow()+1][start.getCol()]);
+        }
+
+         if(start.getCol()+1>=8 && (!b.getSquareArray()[start.getCol()+1][start.getRow()].isOccupied())){
+          moves.add(b.getSquareArray()[start.getCol()+1][start.getRow()]);
+        }
+
+         return moves;
     }
 }
