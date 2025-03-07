@@ -1,7 +1,9 @@
 
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -29,14 +31,12 @@ public class Square extends JComponent {
     
     
     public Square(Board b, boolean isWhite, int row, int col) {
-        
         this.b = b;
         this.color = isWhite;
         this.dispPiece = true;
         this.row = row;
         this.col = col;
-        
-        
+
         this.setBorder(BorderFactory.createEmptyBorder());
     }
     

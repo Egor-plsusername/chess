@@ -1,4 +1,4 @@
-
+           
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -23,7 +24,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     private static final String RESOURCES_WBISHOP_PNG = "wbishop.png";
 	private static final String RESOURCES_BBISHOP_PNG = "bbishop.png";
 	private static final String RESOURCES_WKNIGHT_PNG = "wknight.png";
-	private static final String RESOURCES_BKNIGHT_PNG = "bknight.png";
+	private static final String RESOURCES_BKNIGHT_PNG = "bknight.png"; 
 	private static final String RESOURCES_WROOK_PNG = "wrook.png";
 	private static final String RESOURCES_BROOK_PNG = "brook.png";
 	private static final String RESOURCES_WKING_PNG = "wking.png";
@@ -32,6 +33,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	private static final String RESOURCES_WQUEEN_PNG = "wqueen.png";
 	private static final String RESOURCES_WPAWN_PNG = "wpawn.png";
 	private static final String RESOURCES_BPAWN_PNG = "bpawn.png";
+    private static final String RESOURCES_HANK_PNG = "Hank.png";
+    private static final String RESOURCES_HANKB_PNG = "HankB.png";
 	
 	// Logical and graphical representations of board
 	private final Square[][] board;
@@ -65,6 +68,9 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 //        	populate the board with squares here. Note that the board is composed of 64 squares alternating from 
 //        	white to black.
 
+//Pre Con: Board initialized, board.length iis not out of bounds
+//Post Con: Creates a 2D array representing the game board, adds to the array board each square and it's colour through the use of a alternating boolean
+
     boolean count = true;
     for(int i = 0; i < board.length; i++){
       count = !count;
@@ -91,7 +97,8 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
 	//it's up to you how you wish to arrange your pieces.
     private void initializePieces() {
     	
-    	board[0][0].put(new Piece(true, RESOURCES_WKING_PNG));
+    	board[7][4].put(new Piece(true, RESOURCES_HANK_PNG));
+        board[0][4].put(new Piece(false, RESOURCES_HANKB_PNG));
 
     }
 
@@ -140,7 +147,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         currX = e.getX();
         currY = e.getY();
 
-        Square sq = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
+        Square sq = (Square) this.getComponentAt(new Point(e.getX(), e.getY ()));
 
         if (sq.isOccupied()) {
             currPiece = sq.getOccupyingPiece();
@@ -159,15 +166,28 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
     //use the pieces "legal move" function to determine if this move is legal, then complete it by
     //moving the new piece to it's new board location. 
     @Override
+    //Pre Con: Board Initialized, MouseEvent is not null, getComponentAt is not null, getLegalMoves returns valid legal moves
+    //Post Con: currPiece is moved to endSquare, currPiece set to null
     public void mouseReleased(MouseEvent e) {
         Square endSquare = (Square) this.getComponentAt(new Point(e.getX(), e.getY()));
-        
+
+
+        currX = e.getX();
+        currY = e.getY();
+
         for(Square [] row: board) {
         	for(Square s: row) {
         		s.setBorder(null);
      
         	}
         	
+        }
+
+        if(currPiece.getLegalMoves(this, fromMoveSquare).contains(endSquare)){
+
+            endSquare.put(currPiece);
+            fromMoveSquare.put(null);
+            
         }
                
         fromMoveSquare.setDisplay(true);
@@ -184,11 +204,14 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener 
         currY = e.getY() - 24;
         
 // let's highligh all the squares that are legal to move to!
-        if(currPiece!= null) {
-        	for(Square s: currPiece.getLegalMoves(this, fromMoveSquare)) {
+        if(currPiece!= null) { 
+            ArrayList<Square> legalMoves = currPiece.getLegalMoves(this, fromMoveSquare);
+        	for(Square s: legalMoves) {
+                Rectangle r = new Rectangle();
+                s.getBounds(r);
         		s.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
         	}
-        	
+
         }
         
         repaint();
