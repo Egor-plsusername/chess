@@ -86,19 +86,19 @@ public class Piece {
 
          Square[][] arr = b.getSquareArray();
 
-         if(startRow-1>=0 && (!arr[startRow-1][startCol].isOccupied())){
+         if(startRow-1>=0 && (!arr[startRow-1][startCol].isOccupied()) || startRow-1>=0 && (arr[startRow-1][startCol].isOccupied())){
           moves.add(arr[startRow-1][startCol]);
         }
 
-         if(startCol-1>=0 && (!arr[startCol-1][startRow].isOccupied())){
+         if(startCol-1>=0 && (!arr[startCol-1][startRow].isOccupied()) || startCol-1>=0 && (arr[startCol-1][startRow].isOccupied())){
           moves.add(arr[startRow][startCol-1]);
         }
 
-         if(startRow+1<8 && (!arr[startRow+1][startCol].isOccupied())){ 
+         if(startRow+1<8 && (!arr[startRow+1][startCol].isOccupied()) || startRow+1<8 && (arr[startRow+1][startCol].isOccupied())){ 
           moves.add(arr[startRow+1][startCol]);
         }
 
-         if(startCol+1<8 && (!arr[startCol+1][startRow].isOccupied())){
+         if(startCol+1<8 && (!arr[startCol+1][startRow].isOccupied()) || startCol+1<8 && (arr[startCol+1][startRow].isOccupied())){
           moves.add(arr[startRow][startCol+1]);
         }
 
