@@ -29,6 +29,7 @@ public class StartMenu implements Runnable {
         Box components = Box.createVerticalBox();
         startWindow.add(components);
         
+        
         // Game title
         final JPanel titlePanel = new JPanel();
         components.add(titlePanel);
@@ -45,6 +46,7 @@ public class StartMenu implements Runnable {
             blackPanel.add(blackPiece);
         } catch (Exception e) {
             System.out.println("Required game file bp.png missing");
+            
         }
         
         
